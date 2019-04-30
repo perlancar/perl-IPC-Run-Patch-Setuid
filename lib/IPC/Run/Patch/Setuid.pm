@@ -18,6 +18,7 @@ my $p_do_kid_and_exit = sub {
     my $orig = $ctx->{orig};
 
     defined $config{-euid} or die "Please specify -euid";
+    log_trace "Setting EUID to $config{-euid} ...";
     $> = $config{-euid};
     $ctx->{orig}->(@_);
 };
