@@ -79,6 +79,10 @@ forking.
 
 Unsigned integer.
 
+=head2 -egid
+
+String. Either a single GID or multiple GID separated by space.
+
 
 =head1 SEE ALSO
 
