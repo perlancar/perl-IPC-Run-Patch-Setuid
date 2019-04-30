@@ -24,14 +24,27 @@ my $p_do_kid_and_exit = sub {
         if ($config{-egid} =~ /\A[0-9]+\z/) {
             # a single number, let's set groups to only this group
             my $groups = $); my $num_groups = 1; $num_groups++ while $groups =~ / /g;
-            $) = join(" ", ($config{-egid}) x $num_groups);
-        } else {
+            my $target = join(" ", ($config{-egid}) x $num_groups);
+            $) = $target;
+            die "Failed setting \$) to '$target'" unless $) eq $target;
+        } elsif ($config{-egid} =~ /\A[0-9]+( [0-9]+)+\z/) {
             $) = $config{-egid};
+            die "Failed setting \$) to '$config{-egid}'"
+                unless $) eq $config{-egid};
+        } else {
+            die "Invalid -egid '$config{-egid}', must be integer or ".
+                "integers separated by space";
         }
     }
 
     log_trace "Setting EUID to $config{-euid} ...";
-    $> = $config{-euid};
+    if ($config{-euid} =~ /\A[0-9]+\z/) {
+        $> = $config{-euid};
+        die "Failed setting \$> to '$config{-euid}'"
+            unless $> eq $config{-euid};
+    } else {
+        die "Invalid -euid, must be integer";
+    }
 
     $ctx->{orig}->(@_);
 };
