@@ -21,7 +21,13 @@ my $p_do_kid_and_exit = sub {
 
     if (defined $config{-egid}) {
         log_trace "Setting EGID to $config{-egid} ...";
-        $) = $config{-egid};
+        if ($config{-egid} =~ /\A[0-9]+\z/) {
+            # a single number, let's set groups to only this group
+            my $groups = $); my $num_groups = 1; $num_groups++ while $groups =~ / /g;
+            $) = join(" ", ($config{-egid}) x $num_groups);
+        } else {
+            $) = $config{-egid};
+        }
     }
 
     log_trace "Setting EUID to $config{-euid} ...";
