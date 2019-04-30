@@ -18,8 +18,15 @@ my $p_do_kid_and_exit = sub {
     my $orig = $ctx->{orig};
 
     defined $config{-euid} or die "Please specify -euid";
+
+    if (defined $config{-egid}) {
+        log_trace "Setting EGID to $config{-egid} ...";
+        $) = $config{-egid};
+    }
+
     log_trace "Setting EUID to $config{-euid} ...";
     $> = $config{-euid};
+
     $ctx->{orig}->(@_);
 };
 
@@ -30,6 +37,10 @@ sub patch_data {
             -euid => {
                 schema  => 'uint*',
                 req => 1,
+            },
+            -egid => {
+                summary => 'A GID or several GIDs separated by space',
+                schema  => 'str*',
             },
         },
         patches => [
