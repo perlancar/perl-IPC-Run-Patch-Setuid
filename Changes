@@ -1,4 +1,4 @@
-0.003   2019-04-30 (PERLANCAR)
+0.003   2019-04-30  Released-By: PERLANCAR
 
 	- Check valid -euid & -egid values, check that setuid operation
 	  succeeds.
@@ -12,3 +12,4 @@
 0.001   2019-04-30 (PERLANCAR)
 
         - First release.
+
