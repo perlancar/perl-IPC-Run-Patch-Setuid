@@ -2,3 +2,4 @@ IPC-Run-Patch-Setuid-*
 .build
 *~
 nytprof*
+.DS_Store
